@@ -1,3 +1,15 @@
 [submodule "bundle/glsl"]
 	path = bundle/glsl
 	url = https://github.com/vim-scripts/glsl.vim
+[submodule "bundle/TagHighlight"]
+	path = bundle/TagHighlight
+	url = https://github.com/vim-scripts/TagHighlight.git
+[submodule "bundle/vim-autotag"]
+	path = bundle/vim-autotag
+	url = https://github.com/craigemery/vim-autotag.git
+[submodule "bundle/vim-hier"]
+	path = bundle/vim-hier
+	url = https://github.com/jceb/vim-hier.git
+[submodule "bundle/vim-localvimrc"]
+	path = bundle/vim-localvimrc
+	url = https://github.com/embear/vim-localvimrc.git
