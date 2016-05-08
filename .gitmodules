@@ -16,3 +16,6 @@
 [submodule "bundle/undotree"]
 	path = bundle/undotree
 	url = https://github.com/mbbill/undotree.git
+[submodule "bundle/c99.vim"]
+	path = bundle/c99.vim
+	url = https://github.com/rustygeldmacher/c99.vim.git
