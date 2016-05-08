@@ -17,9 +17,14 @@ noremap <M-L> <C-w>L
 noremap <Leader>s <C-w>s
 noremap <Leader>n :nohls<CR>:HierClear<CR>
 noremap <Leader>b :make<CR>
+noremap <Leader>r :checktime<CR>
+noremap <Leader>u :UndotreeToggle<CR>
+noremap <leader>q :mks!<CR>:wqa<CR>
 
 noremap Cn :cn<CR>
 noremap Cp :cp<CR>
+
+autocmd VimResized * wincmd =
 
 " fix bold colors
 if !has('nvim')
@@ -40,7 +45,7 @@ set nojoinspaces
 set scrolloff=3
 set timeoutlen=500
 set modeline
-" set autochdir
+set autochdir
 
 set expandtab
 set shiftwidth=4
@@ -59,6 +64,12 @@ set tags=tags;
 "let g:easytags_always_enabled = 1
 "let g:easytags_async = 1
 
+" undotree
+set undofile
+let g:undotree_WindowLayout=2
+let g:undotree_SetFocusWhenToggle=1
+let g:undotree_DiffCommand = "diff -u"
+
 set cc=81
 set foldcolumn=1
 set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
@@ -70,30 +81,30 @@ set completeopt=menu,menuone,longest,preview
 
 " the default was just horrid
 colorscheme peachpuff
-highlight Identifier ctermfg=53
-highlight Pmenu ctermbg=16 ctermfg=79
-highlight PmenuSel ctermbg=49 ctermfg=79
-highlight ErrorMsg ctermbg=32 ctermfg=79
-highlight Search ctermbg=none ctermfg=29
-highlight MatchParen ctermbg=none ctermfg=31
-highlight ColorColumn ctermbg=80
+highlight Identifier ctermfg=174
+highlight Pmenu ctermbg=16 ctermfg=231
+highlight PmenuSel ctermbg=162 ctermfg=231
+highlight ErrorMsg ctermbg=88 ctermfg=231
+highlight Search ctermbg=none ctermfg=48
+highlight MatchParen ctermbg=none ctermfg=51
+highlight ColorColumn ctermbg=236
 highlight SpellBad ctermfg=1 ctermbg=none
 highlight SpellCap ctermfg=none ctermbg=none
 highlight SpellRare ctermfg=none ctermbg=none
 highlight SpellLocal ctermfg=3 ctermbg=none
 highlight mailURL ctermfg=2
 highlight mailEmail ctermfg=5
-highlight Folded ctermfg=7  ctermbg=80
-highlight FoldColumn ctermfg=82 ctermbg=16
-highlight LineNr ctermfg=81 ctermbg=16
+highlight Folded ctermfg=7  ctermbg=236
+highlight FoldColumn ctermfg=243 ctermbg=16
+highlight LineNr ctermfg=240 ctermbg=16
 highlight link CTagsConstant Identifier
 highlight link Member Normal
 highlight link EnumeratorName EnumerationName
 highlight link EnumerationName Type
-highlight EnumerationValue ctermfg=41
-highlight DefinedName ctermfg=70
-highlight StatusLineNC cterm=none ctermfg=81 ctermbg=16
-highlight StatusLine cterm=bold ctermfg=84 ctermbg=16
+highlight EnumerationValue ctermfg=114
+highlight DefinedName ctermfg=212
+highlight StatusLineNC cterm=none ctermfg=240 ctermbg=16
+highlight StatusLine cterm=bold ctermfg=247 ctermbg=16
 highlight VertSplit cterm=none ctermbg=16 ctermfg=16
 
 " error highlighting
