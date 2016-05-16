@@ -17,9 +17,8 @@ noremap <M-L> <C-w>L
 noremap <Leader>s <C-w>s
 noremap <Leader>n :nohls<CR>:HierClear<CR>
 noremap <Leader>b :make<CR>
-noremap <Leader>r :checktime<CR>
+noremap <Leader>r :checktime<CR>zuz
 noremap <Leader>u :UndotreeToggle<CR>
-noremap <leader>q :mks!<CR>:wqa<CR>
 
 noremap Cn :cn<CR>
 noremap Cp :cp<CR>
@@ -46,6 +45,8 @@ set scrolloff=3
 set timeoutlen=500
 set modeline
 set autochdir
+set autowrite
+set clipboard=unnamed
 
 set expandtab
 set shiftwidth=4
@@ -55,6 +56,14 @@ set softtabstop=4
 set foldmethod=syntax
 set foldnestmax=1
 set foldlevel=0
+set foldcolumn=1
+set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
+let g:fastfold_fold_command_suffixes = ['x','X','a','A','o','O','c','C','r','R','m','M','i','n','N']
+set sessionoptions-=folds
+
+" au BufWritePost * normal zx
+" au InsertEnter * let w:last_fdm=&foldmethod | setlocal foldmethod=manual
+" au InsertLeave * let &l:foldmethod=w:last_fdm
 
 " ctags
 noremap <C-d> <C-]>
@@ -68,11 +77,11 @@ set tags=tags;
 set undofile
 let g:undotree_WindowLayout=2
 let g:undotree_SetFocusWhenToggle=1
-let g:undotree_DiffCommand = "diff -u"
+
+" ctrlp
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 set cc=81
-set foldcolumn=1
-set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
 set number
 set numberwidth=1
 set mouse=
@@ -115,6 +124,11 @@ let g:hier_highlight_group_qf = 'SyntaxError'
 let g:hier_highlight_group_qfw = 'SyntaxWarn'
 let g:hier_highlight_group_qfi = 'SyntaxInfo'
 
+" diff highlighting
+highlight DiffAdd ctermbg=22
+highlight DiffDelete ctermbg=52 " foo
+highlight DiffChange ctermbg=17
+
 " misc stuff
 let g:localvimrc_persistent = 1
 let g:localvimrc_persistence_file = expand('$HOME') . '/.vim/lvimrc'
@@ -137,6 +151,6 @@ filetype plugin indent on
 
 " extra filetypes
 au BufNewFile,BufRead *.weechatlog setf weechatlog
-au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl
+au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.hook setf glsl
 au BufNewFile,BufRead *.vpy setf python
 au BufNewFile,BufRead /tmp/zsh* setf zsh
