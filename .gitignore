@@ -1,0 +1,6 @@
+doc/
+undo/
+spell/
+lvimrc
+init.vim
+.init.vim-rplugin~
