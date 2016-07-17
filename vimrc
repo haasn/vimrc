@@ -9,12 +9,10 @@ noremap <M-h> <C-w>h
 noremap <M-j> <C-w>j
 noremap <M-k> <C-w>k
 noremap <M-l> <C-w>l
-noremap <M-H> <C-w>H
-noremap <M-J> <C-w>J
-noremap <M-K> <C-w>K
-noremap <M-L> <C-w>L
+noremap <M-J> gT
+noremap <M-K> gt
 
-noremap <Leader>s <C-w>s
+noremap <Leader>s :wa<CR>
 noremap <Leader>n :nohls<CR>:HierClear<CR>
 noremap <Leader>b :make<CR>
 noremap <Leader>r :checktime<CR>
@@ -22,6 +20,23 @@ noremap <Leader>u :UndotreeToggle<CR>
 
 noremap Cn :cn<CR>
 noremap Cp :cp<CR>
+
+" debugging
+nmap <M-p> <Plug>LLBreakSwitch
+vmap ⊇ <Plug>LLStdInSelected
+nnoremap ∈ :LLstdin<CR>
+nnoremap <F5> :LLsession new<CR>
+nnoremap <F6> :LLmode debug<CR>
+nnoremap <F16> :LLmode code<CR>
+nnoremap <F7> :LL process launch<CR>
+nnoremap <F17> :LL process kill<CR>
+nnoremap <F8> :LL continue<CR>
+nnoremap <F18> :LL process interrupt<CR>
+nnoremap € :LL print <C-R>=expand('<cword>')<CR><CR>
+vnoremap € :<C-U>LL print <C-R>=lldb#util#get_selection()<CR><CR>
+
+let g:lldb#sign#bp_symbol='@@'
+let g:lldb#sign#pc_symbol='=>'
 
 autocmd VimResized * wincmd =
 
@@ -87,7 +102,14 @@ set mouse=
 
 " completion stuff
 set completeopt=menu,menuone,longest,preview
-let g:deoplete#enable_at_startup=1
+
+if has('nvim')
+    let g:deoplete#enable_at_startup=1
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    function! s:my_cr_function() abort
+        return deoplete#close_popup() . "\<CR>"
+    endfunction
+endif
 
 " the default was just horrid
 colorscheme peachpuff
@@ -129,6 +151,20 @@ let g:hier_highlight_group_qfi = 'SyntaxInfo'
 highlight DiffAdd ctermbg=22
 highlight DiffDelete ctermbg=52 " foo
 highlight DiffChange ctermbg=17
+
+" tabs highlighting
+highlight TabLine cterm=none ctermbg=239 ctermfg=white
+highlight TabLineSel cterm=bold ctermbg=black ctermfg=white
+highlight TabLineFill cterm=none ctermbg=234
+highlight Title ctermfg=yellow
+
+" debugger highlighting
+highlight LLBreakpointSign cterm=bold ctermfg=green ctermbg=235
+highlight LLSelectedPCSign cterm=bold ctermfg=207 ctermbg=239
+highlight LLBreakpointLine ctermbg=235
+highlight LLSelectedPCLine ctermbg=239
+highlight clear SignColumn
+highlight link SignColumn LineNr
 
 " misc stuff
 let g:localvimrc_persistent = 1

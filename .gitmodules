@@ -28,3 +28,9 @@
 [submodule "plugin/deoplete"]
 	path = bundle/deoplete
 	url = https://github.com/Shougo/deoplete.nvim.git
+[submodule "bundle/supertab"]
+	path = bundle/supertab
+	url = https://github.com/ervandew/supertab.git
+[submodule "bundle/lldb.nvim"]
+	path = bundle/lldb.nvim
+	url = https://github.com/critiqjo/lldb.nvim.git
