@@ -1,6 +1,8 @@
 " custom keybindings
 noremap j gj
 noremap k gk
+noremap H L
+noremap L H
 
 let mapleader="\<SPACE>"
 
@@ -79,7 +81,7 @@ au BufRead * setlocal foldmethod=syntax
 let g:fastfold_fold_command_suffixes = ['x','X','a','A','o','O','c','C','r','R','m','M','i','n','N']
 
 " ctags
-noremap <C-d> <C-]>
+map <C-d> <C-]>
 set tags=tags;
 "let g:easytags_auto_highlight = 0
 "let g:easytags_dynamic_files = 2
