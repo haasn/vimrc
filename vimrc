@@ -1,8 +1,6 @@
 " custom keybindings
 noremap j gj
 noremap k gk
-noremap H L
-noremap L H
 
 let mapleader="\<SPACE>"
 
@@ -11,8 +9,14 @@ noremap <M-h> <C-w>h
 noremap <M-j> <C-w>j
 noremap <M-k> <C-w>k
 noremap <M-l> <C-w>l
-noremap <M-J> gT
-noremap <M-K> gt
+
+" fix alt-keybindings
+if !has('nvim')
+    map h <M-h>
+    map j <M-j>
+    map k <M-k>
+    map l <M-l>
+endif
 
 noremap <Leader>s :wa<CR>
 noremap <Leader>n :nohls<CR>:HierClear<CR>
@@ -20,25 +24,24 @@ noremap <Leader>b :make<CR>
 noremap <Leader>r :checktime<CR>
 noremap <Leader>u :UndotreeToggle<CR>
 
-noremap Cn :cn<CR>
-noremap Cp :cp<CR>
-
 " debugging
-nmap <M-p> <Plug>LLBreakSwitch
-vmap ⊇ <Plug>LLStdInSelected
-nnoremap ∈ :LLstdin<CR>
-nnoremap <F5> :LLsession new<CR>
-nnoremap <F6> :LLmode debug<CR>
-nnoremap <F16> :LLmode code<CR>
-nnoremap <F7> :LL process launch<CR>
-nnoremap <F17> :LL process kill<CR>
-nnoremap <F8> :LL continue<CR>
-nnoremap <F18> :LL process interrupt<CR>
-nnoremap € :LL print <C-R>=expand('<cword>')<CR><CR>
-vnoremap € :<C-U>LL print <C-R>=lldb#util#get_selection()<CR><CR>
+"nmap <M-p> <Plug>LLBreakSwitch
+"vmap ⊇ <Plug>LLStdInSelected
+"nnoremap ∈ :LLstdin<CR>
+"nnoremap <F5> :LLsession new<CR>
+"nnoremap <F6> :LLmode debug<CR>
+"nnoremap <F16> :LLmode code<CR>
+"nnoremap <F7> :LL process launch<CR>
+"nnoremap <F17> :LL process kill<CR>
+"nnoremap <F8> :LL continue<CR>
+"nnoremap <F18> :LL process interrupt<CR>
+"nnoremap € :LL print <C-R>=expand('<cword>')<CR><CR>
+"vnoremap € :<C-U>LL print <C-R>=lldb#util#get_selection()<CR><CR>
+"noremap Cn :cn<CR>
+"noremap Cp :cp<CR>
 
-let g:lldb#sign#bp_symbol='@@'
-let g:lldb#sign#pc_symbol='=>'
+"let g:lldb#sign#bp_symbol='@@'
+"let g:lldb#sign#pc_symbol='=>'
 
 autocmd VimResized * wincmd =
 
@@ -75,6 +78,7 @@ set foldnestmax=1
 set foldlevel=0
 set foldcolumn=1
 set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
+set foldminlines=30
 set sessionoptions-=folds
 au BufRead * setlocal foldmethod=syntax
 
@@ -91,11 +95,13 @@ set tags=tags;
 " undotree
 set undodir=$HOME/.vim/undo
 set undofile
+au BufNewFile,BufRead /tmp/*,/dev/shm/* setl noundofile
 let g:undotree_WindowLayout=2
 let g:undotree_SetFocusWhenToggle=1
 
 " ctrlp
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_switch_buffer = 0
 
 set cc=81
 set number
@@ -207,7 +213,7 @@ function! DeleteInactiveBufs()
     let nWipeouts = 0
     for i in range(1, bufnr('$'))
         if bufexists(i) && !getbufvar(i,"&mod") && index(tablist, i) == -1
-        "bufno exists AND isn't modified AND isn't in the list of buffers open in windows and tabs
+            "bufno exists AND isn't modified AND isn't in the list of buffers open in windows and tabs
             silent exec 'bwipeout' i
             let nWipeouts = nWipeouts + 1
         endif
