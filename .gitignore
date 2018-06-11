@@ -4,3 +4,4 @@ spell/
 lvimrc
 init.vim
 .init.vim-rplugin~
+.netrwhist

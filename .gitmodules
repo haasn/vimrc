@@ -1,9 +1,6 @@
 [submodule "bundle/glsl"]
 	path = bundle/glsl
 	url = https://github.com/vim-scripts/glsl.vim
-[submodule "bundle/TagHighlight"]
-	path = bundle/TagHighlight
-	url = https://github.com/vim-scripts/TagHighlight.git
 [submodule "bundle/vim-autotag"]
 	path = bundle/vim-autotag
 	url = https://github.com/craigemery/vim-autotag.git
@@ -34,3 +31,12 @@
 [submodule "bundle/vim-commentary"]
 	path = bundle/vim-commentary
 	url = git://github.com/tpope/vim-commentary.git
+[submodule "bundle/nvim-yarp"]
+	path = bundle/nvim-yarp
+	url = https://github.com/roxma/nvim-yarp
+[submodule "bundle/vim-hug-neovim-rpc"]
+	path = bundle/vim-hug-neovim-rpc
+	url = https://github.com/roxma/vim-hug-neovim-rpc
+[submodule "bundle/TagHighlight"]
+	path = bundle/TagHighlight
+	url = https://github.com/vim-scripts/TagHighlight

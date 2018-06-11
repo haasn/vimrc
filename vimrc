@@ -1,6 +1,7 @@
 " custom keybindings
 noremap j gj
 noremap k gk
+nnoremap ; :
 
 let mapleader="\<SPACE>"
 
@@ -18,40 +19,27 @@ if !has('nvim')
     map l <M-l>
 endif
 
+" block bindings
+vmap  <expr>  <LEFT>   DVB_Drag('left')
+vmap  <expr>  <RIGHT>  DVB_Drag('right')
+vmap  <expr>  <DOWN>   DVB_Drag('down')
+vmap  <expr>  <UP>     DVB_Drag('up')
+vmap  <expr>  D        DVB_Duplicate()
+
 noremap <Leader>s :wa<CR>
 noremap <Leader>n :nohls<CR>:HierClear<CR>
 noremap <Leader>b :make<CR>
 noremap <Leader>r :checktime<CR>
 noremap <Leader>u :UndotreeToggle<CR>
-
-" debugging
-"nmap <M-p> <Plug>LLBreakSwitch
-"vmap ⊇ <Plug>LLStdInSelected
-"nnoremap ∈ :LLstdin<CR>
-"nnoremap <F5> :LLsession new<CR>
-"nnoremap <F6> :LLmode debug<CR>
-"nnoremap <F16> :LLmode code<CR>
-"nnoremap <F7> :LL process launch<CR>
-"nnoremap <F17> :LL process kill<CR>
-"nnoremap <F8> :LL continue<CR>
-"nnoremap <F18> :LL process interrupt<CR>
-"nnoremap € :LL print <C-R>=expand('<cword>')<CR><CR>
-"vnoremap € :<C-U>LL print <C-R>=lldb#util#get_selection()<CR><CR>
-"noremap Cn :cn<CR>
-"noremap Cp :cp<CR>
-
-"let g:lldb#sign#bp_symbol='@@'
-"let g:lldb#sign#pc_symbol='=>'
+noremap <Leader>T :UpdateTypesFileOnly<CR>
 
 autocmd VimResized * wincmd =
 
-" fix bold colors
-if !has('nvim')
-    set term=rxvt-unicode
-endif
-
-set hlsearch
 set is
+set hlsearch
+set list
+set listchars=tab:⇒\ ,precedes:←,extends:→
+set showbreak=…\ 
 
 syntax sync fromstart
 syntax on
@@ -87,10 +75,10 @@ let g:fastfold_fold_command_suffixes = ['x','X','a','A','o','O','c','C','r','R',
 " ctags
 map <C-d> <C-]>
 set tags=tags;
-"let g:easytags_auto_highlight = 0
-"let g:easytags_dynamic_files = 2
-"let g:easytags_always_enabled = 1
-"let g:easytags_async = 1
+
+map <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " undotree
 set undodir=$HOME/.vim/undo
@@ -109,15 +97,17 @@ set numberwidth=1
 set mouse=
 
 " completion stuff
+let g:SuperTabDefaultCompletionType = "<c-n>"
 set completeopt=menu,menuone,longest,preview
 
-if has('nvim')
-    let g:deoplete#enable_at_startup=1
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function() abort
-        return deoplete#close_popup() . "\<CR>"
-    endfunction
-endif
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#tag#cache_limit_size = 50000000
+let g:deoplete#sources = {}
+let g:deoplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary', 'around']
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function() abort
+    return deoplete#close_popup() . "\<CR>"
+endfunction
 
 " the default was just horrid
 colorscheme peachpuff
@@ -137,15 +127,32 @@ highlight mailEmail ctermfg=5
 highlight Folded ctermfg=7  ctermbg=236
 highlight FoldColumn ctermfg=243 ctermbg=16
 highlight LineNr ctermfg=240 ctermbg=16
-highlight link CTagsConstant Identifier
-highlight link Member Normal
-highlight link EnumeratorName EnumerationName
-highlight link EnumerationName Type
 highlight EnumerationValue ctermfg=114
 highlight DefinedName ctermfg=212
 highlight StatusLineNC cterm=none ctermfg=240 ctermbg=16
 highlight StatusLine cterm=bold ctermfg=247 ctermbg=16
 highlight VertSplit cterm=none ctermbg=16 ctermfg=16
+highlight NonText ctermfg=240
+
+highlight link Variable Normal
+highlight link Member Normal
+
+highlight link CTagsConstant Identifier
+highlight link CTagsLocalVariable Variable
+highlight link EnumeratorName EnumerationName
+highlight link EnumerationName Type
+
+highlight link cTypeTag Type
+highlight link cFunctionTag Function
+highlight link cPreProcTag DefinedName
+highlight link cPreCondit DefinedName
+
+highlight link cppTypeTag cTypeTag
+highlight link cppFunctionTag cFunctionTag
+highlight link cppPreProcTag cPreProcTag
+
+highlight link HighlighterCMember Member
+highlight link HighlighterCPreProc DefinedName
 
 " error highlighting
 highlight SyntaxError cterm=bold ctermfg=15 ctermbg=13
@@ -199,24 +206,3 @@ au BufNewFile,BufRead *.weechatlog setf weechatlog
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.hook setf glsl
 au BufNewFile,BufRead *.vpy setf python
 au BufNewFile,BufRead /tmp/zsh* setf zsh
-
-" more stuff
-function! DeleteInactiveBufs()
-    "From tabpagebuflist() help, get a list of all buffers in all tabs
-    let tablist = []
-    for i in range(tabpagenr('$'))
-        call extend(tablist, tabpagebuflist(i + 1))
-    endfor
-
-    "Below originally inspired by Hara Krishna Dara and Keith Roberts
-    "http://tech.groups.yahoo.com/group/vim/message/56425
-    let nWipeouts = 0
-    for i in range(1, bufnr('$'))
-        if bufexists(i) && !getbufvar(i,"&mod") && index(tablist, i) == -1
-            "bufno exists AND isn't modified AND isn't in the list of buffers open in windows and tabs
-            silent exec 'bwipeout' i
-            let nWipeouts = nWipeouts + 1
-        endif
-    endfor
-    echomsg nWipeouts . ' buffer(s) wiped out'
-endfunction
