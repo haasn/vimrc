@@ -29,9 +29,9 @@ vmap  <expr>  D        DVB_Duplicate()
 noremap <Leader>s :wa<CR>
 noremap <Leader>n :nohls<CR>:HierClear<CR>
 noremap <Leader>b :make<CR>
-noremap <Leader>r :checktime<CR>
+noremap <Leader>r :checktime<CR>:UpdateTypesFileOnly<CR>
 noremap <Leader>u :UndotreeToggle<CR>
-noremap <Leader>T :UpdateTypesFileOnly<CR>
+noremap <Leader>t :UpdateTypesFileOnly<CR>
 
 autocmd VimResized * wincmd =
 
@@ -196,6 +196,8 @@ command -bang -bar Quit q<bang>
 command -bang -bar -nargs=? -complete=file -range=% Write <line1>,<line2>w<bang> <args>
 
 set autoindent
+set copyindent
+set preserveindent
 set backspace=indent
 
 execute pathogen#infect()
@@ -206,3 +208,22 @@ au BufNewFile,BufRead *.weechatlog setf weechatlog
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.hook setf glsl
 au BufNewFile,BufRead *.vpy setf python
 au BufNewFile,BufRead /tmp/zsh* setf zsh
+
+" automatically use tabs
+function TabsOrSpaces()
+    " Determines whether to use spaces or tabs on the current buffer.
+    if getfsize(bufname("%")) > 256000
+        " File is very large, just use the default.
+        return
+    endif
+
+    let numTabs=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^\\t"'))
+    let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
+
+    if numTabs > numSpaces
+        setlocal noexpandtab
+    endif
+endfunction
+
+" Call the function after opening a buffer
+autocmd BufReadPost * call TabsOrSpaces()
