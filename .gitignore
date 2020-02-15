@@ -5,3 +5,4 @@ lvimrc
 init.vim
 .init.vim-rplugin~
 .netrwhist
+.hg/
