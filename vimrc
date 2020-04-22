@@ -142,6 +142,11 @@ highlight link CTagsLocalVariable Variable
 highlight link EnumeratorName EnumerationName
 highlight link EnumerationName Type
 
+highlight link _Neotags_cpp_e_cppEnumTag EnumerationValue
+highlight link _Neotags_c_e_cEnumTag EnumerationValue
+
+highlight link _Neotags_c_v_cGlobalVar Variable
+
 highlight link cTypeTag Type
 highlight link cFunctionTag Function
 highlight link cPreProcTag DefinedName
