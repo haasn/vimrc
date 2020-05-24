@@ -29,9 +29,9 @@ vmap  <expr>  D        DVB_Duplicate()
 noremap <Leader>s :wa<CR>
 noremap <Leader>n :nohls<CR>:HierClear<CR>
 noremap <Leader>b :make<CR>
-noremap <Leader>r :checktime<CR>:UpdateTypesFileOnly<CR>
+noremap <Leader>r :checktime<CR>
 noremap <Leader>u :UndotreeToggle<CR>
-noremap <Leader>t :UpdateTypesFileOnly<CR>
+noremap <Leader>t :NeotagsToggle<CR>
 
 autocmd VimResized * wincmd =
 
@@ -41,7 +41,7 @@ set list
 set listchars=tab:⇒\ ,precedes:←,extends:→
 set showbreak=…\ 
 
-syntax sync fromstart
+syntax sync minlines=100 ccomment
 syntax on
 
 set background=dark
@@ -79,6 +79,10 @@ set tags=tags;
 map <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+let g:neotags_enabled=1
+let g:neotags#c#order = 'defgstuv'
+set regexpengine=1
 
 " undotree
 set undodir=$HOME/.vim/undo
@@ -142,15 +146,13 @@ highlight link CTagsLocalVariable Variable
 highlight link EnumeratorName EnumerationName
 highlight link EnumerationName Type
 
-highlight link _Neotags_cpp_e_cppEnumTag EnumerationValue
-highlight link _Neotags_c_e_cEnumTag EnumerationValue
-
-highlight link _Neotags_c_v_cGlobalVar Variable
+highlight link neotags_EnumTag EnumerationValue
 
 highlight link cTypeTag Type
 highlight link cFunctionTag Function
 highlight link cPreProcTag DefinedName
 highlight link cPreCondit DefinedName
+highlight link cGlobalVar Identifier
 
 highlight link cppTypeTag cTypeTag
 highlight link cppFunctionTag cFunctionTag
