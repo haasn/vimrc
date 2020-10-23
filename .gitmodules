@@ -43,3 +43,6 @@
 [submodule "bundle/neotags.nvim"]
 	path = bundle/neotags.nvim
 	url = https://github.com/c0r73x/neotags.nvim.git
+[submodule "bundle/vim-qml"]
+	path = bundle/vim-qml
+	url = https://github.com/peterhoeg/vim-qml
