@@ -82,6 +82,7 @@ map <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<
 
 let g:neotags_enabled=1
 let g:neotags#c#order = 'defgstuv'
+" let g:neotags_ctags_args = ['--exclude=build','--exclude=build.*']
 set regexpengine=1
 
 " undotree
@@ -106,8 +107,6 @@ set completeopt=menu,menuone,longest,preview
 
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#tag#cache_limit_size = 50000000
-let g:deoplete#sources = {}
-let g:deoplete#sources._ = ['buffer', 'member', 'tag', 'file', 'dictionary', 'around']
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function() abort
     return deoplete#close_popup() . "\<CR>"
@@ -209,6 +208,10 @@ set backspace=indent
 
 execute pathogen#infect()
 filetype plugin indent on
+
+call deoplete#custom#option('sources', {
+\  '_': ['buffer', 'member', 'tag', 'file', 'dictionary', 'around'],
+\})
 
 " extra filetypes
 au BufNewFile,BufRead *.weechatlog setf weechatlog
