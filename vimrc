@@ -2,6 +2,9 @@
 noremap j gj
 noremap k gk
 nnoremap ; :
+vnoremap ; :
+nnoremap : <Esc>
+vnoremap : <Esc>
 
 let mapleader="\<SPACE>"
 
@@ -32,6 +35,8 @@ noremap <Leader>b :make<CR>
 noremap <Leader>r :checktime<CR>
 noremap <Leader>u :UndotreeToggle<CR>
 noremap <Leader>t :NeotagsToggle<CR>
+
+command Tag tag
 
 autocmd VimResized * wincmd =
 
