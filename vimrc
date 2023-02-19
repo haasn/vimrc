@@ -78,20 +78,20 @@ au BufRead * setlocal foldmethod=syntax
 let g:fastfold_fold_command_suffixes = ['x','X','a','A','o','O','c','C','r','R','m','M','i','n','N']
 
 " ctags
-map <C-d> <C-]>
+noremap <C-d> <C-]>
 set tags=tags;
 
-map <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+noremap <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 let g:neotags_enabled=1
 let g:neotags#c#order = 'defgstuv'
-" let g:neotags_ctags_args = ['--exclude=build','--exclude=build.*']
-set regexpengine=1
+let g:neotags_ctags_args = ['--exclude=build','--exclude=build.*','--exclude=3rdparty']
+set regexpengine=0
 
 " undotree
-set undodir=$HOME/.vim/undo
+set undodir=$HOME/.vim_undo
 set undofile
 au BufNewFile,BufRead /tmp/*,/dev/shm/* setl noundofile
 let g:undotree_WindowLayout=2
@@ -117,12 +117,15 @@ function! s:my_cr_function() abort
     return deoplete#close_popup() . "\<CR>"
 endfunction
 
-" the default was just horrid
-colorscheme peachpuff
-highlight Identifier ctermfg=174
+" color scheme
+highlight Identifier ctermfg=174 cterm=none
+highlight Comment ctermfg=4
+highlight Constant ctermfg=1
+highlight Special ctermfg=5
+highlight PreProc ctermfg=5
 highlight Pmenu ctermbg=16 ctermfg=231
 highlight PmenuSel ctermbg=162 ctermfg=231
-highlight ErrorMsg ctermbg=88 ctermfg=231
+highlight Error cterm=bold,reverse ctermfg=88 ctermbg=231
 highlight Search ctermbg=none ctermfg=48
 highlight MatchParen ctermbg=none ctermfg=51
 highlight ColorColumn ctermbg=236
@@ -141,34 +144,39 @@ highlight StatusLineNC cterm=none ctermfg=240 ctermbg=16
 highlight StatusLine cterm=bold ctermfg=247 ctermbg=16
 highlight VertSplit cterm=none ctermbg=16 ctermfg=16
 highlight NonText ctermfg=240
+highlight Statement cterm=none ctermfg=3
+highlight Type cterm=none ctermfg=2
+highlight Visual ctermbg=none cterm=inverse
 
-highlight link Variable Normal
-highlight link Member Normal
+highlight! link Variable Normal
+highlight! link Member Normal
+highlight! link ErrorMsg Error
 
-highlight link CTagsConstant Identifier
-highlight link CTagsLocalVariable Variable
-highlight link EnumeratorName EnumerationName
-highlight link EnumerationName Type
+highlight! link CTagsConstant Identifier
+highlight! link CTagsLocalVariable Variable
+highlight! link EnumeratorName EnumerationName
+highlight! link EnumerationName Type
+highlight! link neotags_EnumTag EnumerationValue
 
-highlight link neotags_EnumTag EnumerationValue
+highlight! link cTypeTag Type
+highlight! link cFunctionTag Function
+highlight! link cPreProcTag DefinedName
+highlight! link cPreCondit DefinedName
+highlight! link cGlobalVar Identifier
+highlight! link specMacroIdentifier Identifier
+highlight! link specSectionMacroArea Macro
 
-highlight link cTypeTag Type
-highlight link cFunctionTag Function
-highlight link cPreProcTag DefinedName
-highlight link cPreCondit DefinedName
-highlight link cGlobalVar Identifier
+highlight! link cppTypeTag cTypeTag
+highlight! link cppFunctionTag cFunctionTag
+highlight! link cppPreProcTag cPreProcTag
 
-highlight link cppTypeTag cTypeTag
-highlight link cppFunctionTag cFunctionTag
-highlight link cppPreProcTag cPreProcTag
-
-highlight link HighlighterCMember Member
-highlight link HighlighterCPreProc DefinedName
+highlight! link HighlighterCMember Member
+highlight! link HighlighterCPreProc DefinedName
 
 " error highlighting
 highlight SyntaxError cterm=bold ctermfg=15 ctermbg=13
 highlight SyntaxWarn cterm=bold ctermfg=11 ctermbg=8
-highlight link SyntaxInfo Normal
+highlight! link SyntaxInfo Normal
 let g:hier_highlight_group_qf = 'SyntaxError'
 let g:hier_highlight_group_qfw = 'SyntaxWarn'
 let g:hier_highlight_group_qfi = 'SyntaxInfo'
@@ -189,8 +197,7 @@ highlight LLBreakpointSign cterm=bold ctermfg=green ctermbg=235
 highlight LLSelectedPCSign cterm=bold ctermfg=207 ctermbg=239
 highlight LLBreakpointLine ctermbg=235
 highlight LLSelectedPCLine ctermbg=239
-highlight clear SignColumn
-highlight link SignColumn LineNr
+highlight! link SignColumn LineNr
 
 " misc stuff
 let g:localvimrc_persistent = 1
